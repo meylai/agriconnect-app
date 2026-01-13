@@ -167,7 +167,7 @@ class LoginScreenState extends State<LoginScreen> {
                               MaterialPageRoute(
                                 builder: (context) => userType == 'farmer'
                                     ? const FarmerDashboard()
-                                    : BuyerDashboard(),
+                                    : const BuyerDashboard(),
                               ),
                             );
                           },
@@ -212,9 +212,9 @@ class FarmerDashboardState extends State<FarmerDashboard> {
 
   final List<Widget> _pages = [
     const FarmerHomeScreen(),
-    MyListingsScreen(),
-    OrdersScreen(),
-    FarmerProfileScreen(),
+    const MyListingsScreen(),
+    const OrdersScreen(),
+    const FarmerProfileScreen(),
   ];
 
   @override
@@ -308,7 +308,7 @@ class FarmerHomeScreen extends StatelessWidget {
                     Colors.green,
                     () => Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => AddListingScreen()),
+                      MaterialPageRoute(builder: (context) => const AddListingScreen()),
                     ),
                   ),
                 ),
@@ -321,7 +321,7 @@ class FarmerHomeScreen extends StatelessWidget {
                     Colors.blue,
                     () => Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => MarketPricesScreen()),
+                      MaterialPageRoute(builder: (context) => const MarketPricesScreen()),
                     ),
                   ),
                 ),
@@ -604,10 +604,10 @@ class _BuyerDashboardState extends State<BuyerDashboard> {
   int _selectedIndex = 0;
 
   final List<Widget> _pages = [
-    BuyerHomeScreen(),
-    BrowseProduceScreen(),
-    PurchasesScreen(),
-    BuyerProfileScreen(),
+    const BuyerHomeScreen(),
+    const BrowseProduceScreen(),
+    const PurchasesScreen(),
+    const BuyerProfileScreen(),
   ];
 
   @override
@@ -755,21 +755,21 @@ class BuyerHomeScreen extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
+                  Text(
                     title,
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                   Text(
                     'by $farmer',
-                    style: TextStyle(
+                    style:  TextStyle(
                       color: Colors.grey[600],
                       fontSize: 14,
                     ),
                   ),
-                  SizedBox(height: 5),
+                  const SizedBox(height: 5),
                   Text(quantity),
                   Text(
                     location,
@@ -792,7 +792,7 @@ class BuyerHomeScreen extends StatelessWidget {
                     color: Colors.green[700],
                   ),
                 ),
-                SizedBox(height: 10),
+                const SizedBox(height: 10),
                 ElevatedButton(
                   onPressed: () {},
                   style: ElevatedButton.styleFrom(
@@ -800,9 +800,9 @@ class BuyerHomeScreen extends StatelessWidget {
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(20),
                     ),
-                    padding: EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+                    padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
                   ),
-                  child: Text(
+                  child: const Text(
                     'Contact',
                     style: TextStyle(
                       fontSize: 12,
@@ -820,6 +820,8 @@ class BuyerHomeScreen extends StatelessWidget {
 }
 
 class MarketPricesScreen extends StatelessWidget {
+  const MarketPricesScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -827,12 +829,12 @@ class MarketPricesScreen extends StatelessWidget {
         title: const Text('Market Prices'),
       ),
       body: Padding(
-        padding: EdgeInsets.all(20),
+        padding: const EdgeInsets.all(20),
         child: Column(
           children: [
             Container(
               width: double.infinity,
-              padding: EdgeInsets.all(15),
+              padding: const EdgeInsets.all(15),
               decoration: BoxDecoration(
                 color: Colors.blue[50],
                 borderRadius: BorderRadius.circular(10),
@@ -841,7 +843,7 @@ class MarketPricesScreen extends StatelessWidget {
               child: Row(
                 children: [
                   Icon(Icons.info, color: Colors.blue[700]),
-                  SizedBox(width: 10),
+                  const SizedBox(width: 10),
                   Expanded(
                     child: Text(
                       'Prices updated daily from major markets across Malawi',
@@ -851,7 +853,7 @@ class MarketPricesScreen extends StatelessWidget {
                 ],
               ),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             Expanded(
               child: ListView(
                 children: [
@@ -870,13 +872,13 @@ class MarketPricesScreen extends StatelessWidget {
 
   Widget _buildPriceCard(String crop, String price, String change, Color changeColor, String market) {
     return Card(
-      margin: EdgeInsets.only(bottom: 10),
+      margin: const EdgeInsets.only(bottom: 10),
       child: ListTile(
         leading: CircleAvatar(
           backgroundColor: Colors.green[100],
           child: Icon(Icons.grain, color: Colors.green[700]),
         ),
-        title: Text(crop, style: TextStyle(fontWeight: FontWeight.w600)),
+        title: Text(crop, style: const TextStyle(fontWeight: FontWeight.w600)),
         subtitle: Text('$market Market'),
         trailing: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -884,7 +886,7 @@ class MarketPricesScreen extends StatelessWidget {
           children: [
             Text(
               price,
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
               ),
@@ -905,61 +907,72 @@ class MarketPricesScreen extends StatelessWidget {
 
 // Placeholder screens
 class MyListingsScreen extends StatelessWidget {
+  const MyListingsScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('My Listings')),
-      body: Center(child: Text('My Listings Screen')),
+      appBar: AppBar(title: const Text('My Listings')),
+      body: const Center(child: Text('My Listings Screen')),
     );
   }
 }
 
 class OrdersScreen extends StatelessWidget {
+  const OrdersScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Orders')),
-      body: Center(child: Text('Orders Screen')),
+      appBar: AppBar(title: const Text('Orders')),
+      body: const Center(child: Text('Orders Screen')),
     );
   }
 }
 
 class FarmerProfileScreen extends StatelessWidget {
+  const FarmerProfileScreen({super.key});
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Profile')),
-      body: Center(child: Text('Farmer Profile Screen')),
+      appBar: AppBar(title: const Text('Profile')),
+      body: const Center(child: Text('Farmer Profile Screen')),
     );
   }
 }
 
 class BrowseProduceScreen extends StatelessWidget {
+  const BrowseProduceScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Browse Produce')),
-      body: Center(child: Text('Browse Produce Screen')),
+      appBar: AppBar(title: const Text('Browse Produce')),
+      body: const Center(child: Text('Browse Produce Screen')),
     );
   }
 }
 
 class PurchasesScreen extends StatelessWidget {
+  const PurchasesScreen({super.key});
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('My Purchases')),
-      body: Center(child: Text('Purchases Screen')),
+      appBar: AppBar(title: const Text('My Purchases')),
+      body: const Center(child: Text('Purchases Screen')),
     );
   }
 }
 
 class BuyerProfileScreen extends StatelessWidget {
+  const BuyerProfileScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Profile')),
-      body: Center(child: Text('Buyer Profile Screen')),
+      appBar: AppBar(title: const Text('Profile')),
+      body: const Center(child: Text('Buyer Profile Screen')),
     );
   }
 }
