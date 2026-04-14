@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:agriconnect_app/models/listing.dart';
+import 'package:agriconnect_app/screens/product_detail_screen.dart';
+import 'package:agriconnect_app/screens/profile_screen.dart';
+import 'package:agriconnect_app/models/user_profile.dart';
 
 class BuyerDashboard extends StatefulWidget {
   const BuyerDashboard({super.key});
@@ -14,7 +18,7 @@ class _BuyerDashboardState extends State<BuyerDashboard> {
     const BuyerHomeScreen(),
     const BrowseProduceScreen(),
     const PurchasesScreen(),
-    const BuyerProfileScreen(),
+    const ProfileScreen(profile: buyerProfile),
   ];
 
   @override
@@ -100,33 +104,12 @@ class BuyerHomeScreen extends StatelessWidget {
             ),
             const SizedBox(height: 15),
             Expanded(
-              child: ListView(
-                children: [
-                  _buildProduceCard(
-                    'Premium Maize',
-                    'John Banda',
-                    '500 kg available',
-                    'MWK 1,500/kg',
-                    'Lilongwe',
-                    Colors.amber,
-                  ),
-                  _buildProduceCard(
-                    'Organic Soybeans',
-                    'Mary Phiri',
-                    '200 kg available',
-                    'MWK 2,200/kg',
-                    'Blantyre',
-                    Colors.green,
-                  ),
-                  _buildProduceCard(
-                    'Fresh Maize',
-                    'Peter Mwale',
-                    '800 kg available',
-                    'MWK 1,400/kg',
-                    'Mzuzu',
-                    Colors.amber,
-                  ),
-                ],
+              child: ListView.builder(
+                itemCount: sampleListings.length,
+                itemBuilder: (context, index) {
+                  final listing = sampleListings[index];
+                  return _buildProduceCard(context, listing);
+                },
               ),
             ),
           ],
@@ -135,8 +118,7 @@ class BuyerHomeScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildProduceCard(String title, String farmer, String quantity,
-      String price, String location, Color color) {
+  Widget _buildProduceCard(BuildContext context, Listing listing) {
     return Card(
       margin: const EdgeInsets.only(bottom: 15),
       elevation: 3,
@@ -148,12 +130,12 @@ class BuyerHomeScreen extends StatelessWidget {
               width: 60,
               height: 60,
               decoration: BoxDecoration(
-                color: color.withValues(alpha: 0.1),
+                color: Colors.green.withOpacity(0.12),
                 borderRadius: BorderRadius.circular(30),
               ),
-              child: Icon(
+              child: const Icon(
                 Icons.grain,
-                color: color,
+                color: Colors.green,
                 size: 30,
               ),
             ),
@@ -163,23 +145,23 @@ class BuyerHomeScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    title,
+                    listing.crop,
                     style: const TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                   Text(
-                    'by $farmer',
+                    'by ${listing.farmer}',
                     style: TextStyle(
                       color: Colors.grey[600],
                       fontSize: 14,
                     ),
                   ),
                   const SizedBox(height: 5),
-                  Text(quantity),
+                  Text(listing.quantityLabel),
                   Text(
-                    location,
+                    listing.location,
                     style: TextStyle(
                       color: Colors.grey[600],
                       fontSize: 12,
@@ -192,7 +174,7 @@ class BuyerHomeScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 Text(
-                  price,
+                  listing.priceLabel,
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
@@ -201,7 +183,14 @@ class BuyerHomeScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: 10),
                 ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ProductDetailScreen(listing: listing),
+                      ),
+                    );
+                  },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.blue[700],
                     shape: RoundedRectangleBorder(
@@ -233,7 +222,32 @@ class BrowseProduceScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Browse Produce')),
-      body: const Center(child: Text('Browse Produce Screen')),
+      body: Padding(
+        padding: const EdgeInsets.all(20),
+        child: ListView.builder(
+          itemCount: sampleListings.length,
+          itemBuilder: (context, index) {
+            final listing = sampleListings[index];
+            return Card(
+              margin: const EdgeInsets.only(bottom: 15),
+              child: ListTile(
+                leading: const Icon(Icons.agriculture, color: Colors.green),
+                title: Text(listing.crop),
+                subtitle: Text('${listing.quantityLabel} • ${listing.location}'),
+                trailing: Text(listing.priceLabel, style: const TextStyle(fontWeight: FontWeight.bold)),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ProductDetailScreen(listing: listing),
+                    ),
+                  );
+                },
+              ),
+            );
+          },
+        ),
+      ),
     );
   }
 }
@@ -245,19 +259,7 @@ class PurchasesScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('My Purchases')),
-      body: const Center(child: Text('Purchases Screen')),
-    );
-  }
-}
-
-class BuyerProfileScreen extends StatelessWidget {
-  const BuyerProfileScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Profile')),
-      body: const Center(child: Text('Buyer Profile Screen')),
+      body: const Center(child: Text('Your purchase orders will appear here.')), 
     );
   }
 }

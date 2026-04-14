@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:agriconnect_app/models/listing.dart';
+import 'package:agriconnect_app/models/user_profile.dart';
 import 'package:agriconnect_app/screens/add_listing_screen.dart';
 import 'package:agriconnect_app/screens/market_prices_screen.dart';
+import 'package:agriconnect_app/screens/product_detail_screen.dart';
+import 'package:agriconnect_app/screens/profile_screen.dart';
 
 class FarmerDashboard extends StatefulWidget {
   const FarmerDashboard({super.key});
@@ -16,7 +20,7 @@ class FarmerDashboardState extends State<FarmerDashboard> {
     const FarmerHomeScreen(),
     const MyListingsScreen(),
     const OrdersScreen(),
-    const FarmerProfileScreen(),
+    const ProfileScreen(profile: farmerProfile),
   ];
 
   @override
@@ -175,9 +179,9 @@ class FarmerHomeScreen extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(20),
         decoration: BoxDecoration(
-          color: color.withValues(alpha: 0.1),
+          color: color.withOpacity(0.1),
           borderRadius: BorderRadius.circular(15),
-          border: Border.all(color: color.withValues(alpha: 0.3)),
+          border: Border.all(color: color.withOpacity(0.3)),
         ),
         child: Column(
           children: [
@@ -202,7 +206,7 @@ class FarmerHomeScreen extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: 10),
       child: ListTile(
         leading: CircleAvatar(
-          backgroundColor: color.withValues(alpha: 0.1),
+          backgroundColor: color.withOpacity(0.1),
           child: Icon(icon, color: color),
         ),
         title: Text(title, style: const TextStyle(fontWeight: FontWeight.w600)),
@@ -218,9 +222,45 @@ class MyListingsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final myListings = sampleListings.where((listing) => listing.farmer == 'John Banda').toList();
+
     return Scaffold(
       appBar: AppBar(title: const Text('My Listings')),
-      body: const Center(child: Text('My Listings Screen')),
+      body: myListings.isEmpty
+          ? const Center(child: Text('You do not have any listings yet.'))
+          : ListView.builder(
+              padding: const EdgeInsets.all(20),
+              itemCount: myListings.length,
+              itemBuilder: (context, index) {
+                final listing = myListings[index];
+                return Card(
+                  margin: const EdgeInsets.only(bottom: 15),
+                  child: ListTile(
+                    title: Text(listing.crop, style: const TextStyle(fontWeight: FontWeight.bold)),
+                    subtitle: Text('${listing.quantityLabel} • ${listing.location}'),
+                    trailing: Text(listing.priceLabel, style: const TextStyle(fontWeight: FontWeight.bold)),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ProductDetailScreen(listing: listing),
+                        ),
+                      );
+                    },
+                  ),
+                );
+              },
+            ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const AddListingScreen()),
+          );
+        },
+        backgroundColor: Colors.green[700],
+        child: const Icon(Icons.add),
+      ),
     );
   }
 }
@@ -233,18 +273,6 @@ class OrdersScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(title: const Text('Orders')),
       body: const Center(child: Text('Orders Screen')),
-    );
-  }
-}
-
-class FarmerProfileScreen extends StatelessWidget {
-  const FarmerProfileScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Profile')),
-      body: const Center(child: Text('Farmer Profile Screen')),
     );
   }
 }
